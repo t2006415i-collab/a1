@@ -1,0 +1,29 @@
+name: Build Windows EXE
+
+on: [push] 
+
+jobs:
+  build_for_windows:
+    runs-on: windows-latest 
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Run PyInstaller to create EXE
+      run: |
+        pyinstaller --onefile --windowed --name DocuMergeApp --add-data "static;static" app_runtime.py
+
+    - name: Upload EXE File
+      uses: actions/upload-artifact@v4
+      with:
+        name: DocuMergeApp-Windows-EXE
+        path: dist/DocuMergeApp.exe
