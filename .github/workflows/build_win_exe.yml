@@ -12,17 +12,22 @@ jobs:
       with:
         python-version: '3.11'
     
+    # 1. تثبيت PyInstaller أولاً
     - name: Install PyInstaller
       run: |
         pip install pyinstaller
     
+    # 2. تثبيت المكتبات المتبقية من requirements.txt
     - name: Install Dependencies from requirements.txt
       run: |
         pip install -r requirements.txt
     
+    # 3. أمر التجميع
     - name: Run PyInstaller to create EXE
       run: |
-        pyinstaller --onefile --windowed --name DocuMergeApp --add-data "static;static" app_runtime.py
+        # التصحيح النهائي: تمت إزالة (--add-data "static;static")
+        # لأن المجلد غير موجود/غير مطلوب. هذا يحل خطأ المسار.
+        pyinstaller --onefile --windowed --name DocuMergeApp --collect-all flask app_runtime.py
     
     - name: Upload EXE File
       uses: actions/upload-artifact@v4
