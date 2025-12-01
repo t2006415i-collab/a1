@@ -11,17 +11,19 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-
-    - name: Install dependencies
+    
+    - name: Install PyInstaller
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
         pip install pyinstaller
-
+    
+    - name: Install Dependencies from requirements.txt
+      run: |
+        pip install -r requirements.txt
+    
     - name: Run PyInstaller to create EXE
       run: |
         pyinstaller --onefile --windowed --name DocuMergeApp --add-data "static;static" app_runtime.py
-
+    
     - name: Upload EXE File
       uses: actions/upload-artifact@v4
       with:
